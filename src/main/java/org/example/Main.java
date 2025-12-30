@@ -5,6 +5,8 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+    public static int countSTSIncome = 0;
+    public static int countSTSIncomeMinusExpenses = 0;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         long income = 0L;
@@ -47,26 +49,39 @@ public class Main {
         System.out.println();
     }
     public static void PrintBestSTS(long income, long expenses){
-        if(isFirstOptionGood(income, expenses)){
+        long stsIncome = STSIncome(income);
+        long stsIncomeMinusExpenses = STSIncomeMinusExpenses(income, expenses);
+        long stsDifference = Math.abs(stsIncome - stsIncomeMinusExpenses);
+
+        if(stsIncome < stsIncomeMinusExpenses){
             System.out.println("УСН доходы выгоднее");
-            System.out.println("УСН доходы составит: "+STSIncome(income));
-            System.out.println("УСН доходы минус расходы составит: "+STSIncomeMinusExpenses(income, expenses));
-            System.out.println("Экономия: "+(Math.abs(STSIncome(income)-STSIncomeMinusExpenses(income, expenses))));
-        }else {
+            System.out.println("УСН доходы составит: "+ stsIncome);
+            System.out.println("УСН доходы минус расходы составит: "+ stsIncomeMinusExpenses);
+            System.out.println("Экономия: "+ stsDifference);
+        }else if (stsIncome > stsIncomeMinusExpenses){
             System.out.println("УСН доходы минус расходы выгоднее");
-            System.out.println("УСН доходы составит: "+STSIncome(income));
-            System.out.println("УСН доходы минус расходы составит: "+STSIncomeMinusExpenses(income, expenses));
-            System.out.println("Экономия: "+(Math.abs(STSIncome(income)-STSIncomeMinusExpenses(income, expenses))));
+            System.out.println("УСН доходы составит: "+ stsIncome);
+            System.out.println("УСН доходы минус расходы составит: "+ stsIncomeMinusExpenses);
+            System.out.println("Экономия: "+ stsDifference);
+        }else{
+            System.out.println("Оба варианта УСН одинаковы");
+            System.out.println("УСН доходы составит: "+ stsIncome);
+            System.out.println("УСН доходы минус расходы составит: "+ stsIncomeMinusExpenses);
+            System.out.println("Экономия: "+ stsDifference);
         }
 
     }
-    public static boolean isFirstOptionGood(long income, long expenses){
-        return STSIncome(income)<STSIncomeMinusExpenses(income, expenses);
-    }
+//    public static boolean isFirstOptionGood(long income, long expenses){
+//        return STSIncome(income)<STSIncomeMinusExpenses(income, expenses);
+//    }
     public static long STSIncome(long income){
+        countSTSIncome++;
+        System.out.println("УСН доходы посчитан "+countSTSIncome+" раз");
         return income*6/100;
     }
     public static long STSIncomeMinusExpenses(long income, long expenses){
+        countSTSIncomeMinusExpenses++;
+        System.out.println("УСН доходы минус расходы посчитан "+countSTSIncomeMinusExpenses+" раз");
         return (Math.max(0, income-expenses))*15/100;
     }
 }
